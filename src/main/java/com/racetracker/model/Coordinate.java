@@ -4,7 +4,6 @@ import jakarta.persistence.Embeddable;
 import lombok.*;
 
 @Embeddable
-@NoArgsConstructor
 public class Coordinate {
     private double longitude;
     private double latitude;
