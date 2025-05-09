@@ -7,9 +7,9 @@ COPY . .
 RUN apt-get install maven -y
 RUN mvn clean install -Dmaven.test.skip=true
 
-FROM openjdk:20-jdk-slim
+FROM openjdk:17-jdk-slim
 
-EXPOSE 8082
+EXPOSE 8080
 
 COPY --from=build /target/racetracker-0.0.1-SNAPSHOT.jar app.jar
 
