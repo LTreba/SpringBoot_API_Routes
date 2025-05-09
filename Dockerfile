@@ -5,7 +5,7 @@ RUN apt-get install openjdk-17-jdk -y
 COPY . .
 
 RUN apt-get install maven -y
-mvn clean install -DskipTests
+RUN mvn clean install -Dmaven.test.skip=true
 
 FROM openjdk:17-jdk-slim
 
