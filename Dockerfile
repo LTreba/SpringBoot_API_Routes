@@ -9,7 +9,7 @@ RUN mvn clean install -Dmaven.test.skip=true
 
 FROM openjdk:17-jdk-slim
 
-EXPOSE 8080
+EXPOSE 8082
 
 COPY --from=build /target/racetracker-0.0.1-SNAPSHOT.jar app.jar
 
