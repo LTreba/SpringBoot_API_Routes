@@ -1,16 +1,20 @@
 FROM ubuntu:latest AS build
 
 RUN apt-get update
-RUN apt-get install openjdk-17-jdk -y
+RUN apt-get install -y openjdk-17-jdk maven
+
+WORKDIR /racetracker
+
 COPY . .
 
-RUN apt-get install maven -y
 RUN mvn clean install -Dmaven.test.skip=true
 
 FROM openjdk:17-jdk-slim
 
-EXPOSE 8082
+WORKDIR /app
 
-COPY --from=build /target/racetracker-0.0.1-SNAPSHOT.jar app.jar
+EXPOSE 8080
 
-ENTRYPOINT [ "java", "-jar", "app.jar" ]
+COPY --from=build /racetracker/target/racetracker-0.0.1-SNAPSHOT.jar app.jar
+
+ENTRYPOINT ["java", "-jar", "app.jar"]
