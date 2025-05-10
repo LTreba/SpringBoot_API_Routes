@@ -12,7 +12,6 @@ VOLUME /data
 
 # Copy the jar with explicit name
 COPY --from=build /app/target/racetracker-1.0-SNAPSHOT.jar /app/app.jar
-COPY data/goodlisteners.db /data/goodlisteners.db
 
 # Create directory for the database with proper permissions
 RUN mkdir -p /data && chmod 777 /data
