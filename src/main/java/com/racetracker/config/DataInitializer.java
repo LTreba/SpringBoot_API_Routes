@@ -1,5 +1,6 @@
 package com.racetracker.config;
 
+import com.racetracker.repository.RouteRepository;
 import com.racetracker.service.RouteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -17,6 +18,9 @@ public class DataInitializer implements CommandLineRunner {
 
     @Autowired
     private ResourceLoader resourceLoader;
+    
+    @Autowired
+    private RouteRepository routeRepository;
 
     private static final String[] FILES = {
         "classpath:routes/Aldeia.geojson",
@@ -29,14 +33,16 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        for (String filePath : FILES) {
-            Resource resource = resourceLoader.getResource(filePath);
-            try (InputStream inputStream = resource.getInputStream()) {
-                routeService.processGeoJsonMocked(inputStream);
-                System.out.println("Rota carregada: " + filePath);
-            } catch (Exception e) {
-                System.err.println("Erro ao carregar " + filePath + ": " + e.getMessage());
+    	if(routeRepository.count() == 0) {
+    		for (String filePath : FILES) {
+                Resource resource = resourceLoader.getResource(filePath);
+                try (InputStream inputStream = resource.getInputStream()) {
+                    routeService.processGeoJsonMocked(inputStream);
+                    System.out.println("Rota carregada: " + filePath);
+                } catch (Exception e) {
+                    System.err.println("Erro ao carregar " + filePath + ": " + e.getMessage());
+                }
             }
-        }
+    	}
     }
 }
