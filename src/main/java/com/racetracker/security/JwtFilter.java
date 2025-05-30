@@ -19,10 +19,12 @@ public class JwtFilter implements Filter {
             throws IOException, ServletException {
 
         HttpServletRequest request = (HttpServletRequest) req;
+        HttpServletResponse response = (HttpServletResponse) res;
+
         String method = request.getMethod();
         String uri = request.getRequestURI();
 
-        if (method.equalsIgnoreCase("GET") && uri.endsWith("/routes")) {
+        if (method.equalsIgnoreCase("GET")) {
             chain.doFilter(req, res);
             return;
         }
@@ -32,25 +34,20 @@ public class JwtFilter implements Filter {
             return;
         }
 
-        boolean isProtectedRoute = (
-            (method.equalsIgnoreCase("POST") || method.equalsIgnoreCase("DELETE"))
-        );
-
-        if (isProtectedRoute) {
+        if ((method.equalsIgnoreCase("POST") || method.equalsIgnoreCase("DELETE"))) {
             String authHeader = request.getHeader("Authorization");
 
             if (authHeader != null && authHeader.startsWith("Bearer ")) {
                 String token = authHeader.substring(7);
                 if (!jwtService.isTokenValid(token)) {
-                    ((HttpServletResponse) res).sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token inválido.");
+                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token inválido.");
                     return;
                 }
             } else {
-                ((HttpServletResponse) res).sendError(HttpServletResponse.SC_UNAUTHORIZED, "Faltando token.");
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Faltando token.");
                 return;
             }
         }
-
         chain.doFilter(req, res);
     }
 
