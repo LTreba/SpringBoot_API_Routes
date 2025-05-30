@@ -22,7 +22,7 @@ public class JwtFilter implements Filter {
         String method = request.getMethod();
         String uri = request.getRequestURI();
 
-        if (method.equalsIgnoreCase("GET") && uri.equals("/api/routes")) {
+        if (method.equalsIgnoreCase("GET") && uri.equals("/routes")) {
             chain.doFilter(req, res);
             return;
         }
