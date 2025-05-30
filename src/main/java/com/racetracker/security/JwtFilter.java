@@ -32,20 +32,28 @@ public class JwtFilter implements Filter {
             return;
         }
 
-        String authHeader = request.getHeader("Authorization");
+        boolean isProtectedRoute = (
+            (method.equalsIgnoreCase("POST") || method.equalsIgnoreCase("DELETE")) &&
+            uri.contains("/routes")
+        );
 
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            String token = authHeader.substring(7);
-            if (!jwtService.isTokenValid(token)) {
-                ((HttpServletResponse) res).sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token inválido.");
+        if (isProtectedRoute) {
+            String authHeader = request.getHeader("Authorization");
+
+            if (authHeader != null && authHeader.startsWith("Bearer ")) {
+                String token = authHeader.substring(7);
+                if (!jwtService.isTokenValid(token)) {
+                    ((HttpServletResponse) res).sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token inválido.");
+                    return;
+                }
+            } else {
+                ((HttpServletResponse) res).sendError(HttpServletResponse.SC_UNAUTHORIZED, "Faltando token.");
                 return;
             }
-        } else {
-            ((HttpServletResponse) res).sendError(HttpServletResponse.SC_UNAUTHORIZED, "Faltando token.");
-            return;
         }
 
         chain.doFilter(req, res);
     }
+
 
 }
