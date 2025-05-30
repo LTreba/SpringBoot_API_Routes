@@ -15,7 +15,6 @@ public class SecurityConfig {
     public FilterRegistrationBean<JwtFilter> jwtFilterRegistration() {
         FilterRegistrationBean<JwtFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(jwtFilter);
-        registrationBean.addUrlPatterns("/api/*"); //Protegendo todos os endpoints da api
         return registrationBean;
     }
     
