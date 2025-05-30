@@ -33,8 +33,7 @@ public class JwtFilter implements Filter {
         }
 
         boolean isProtectedRoute = (
-            (method.equalsIgnoreCase("POST") || method.equalsIgnoreCase("DELETE")) &&
-            uri.contains("/routes")
+            (method.equalsIgnoreCase("POST") || method.equalsIgnoreCase("DELETE"))
         );
 
         if (isProtectedRoute) {
