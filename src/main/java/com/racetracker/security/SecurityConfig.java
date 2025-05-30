@@ -23,7 +23,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public FilterRegistrationBean<JwtFilter> jwtFilter(JwtFilter filter) {
+    public FilterRegistrationBean<JwtFilter> jwtFilterRegistration(JwtFilter filter) {
         FilterRegistrationBean<JwtFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(filter);
         registrationBean.addUrlPatterns("/*");
