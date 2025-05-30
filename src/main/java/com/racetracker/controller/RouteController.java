@@ -32,4 +32,15 @@ public class RouteController {
             return ResponseEntity.status(500).body("Erro ao processar o arquivo: " + e.getMessage());
         }
     }
+    
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteRoute(@PathVariable Long id) {
+        try {
+            routeService.deleteRoute(id);
+            return ResponseEntity.ok("Rota deletada com sucesso!");
+        } catch (Exception e) {
+            return ResponseEntity.status(404).body("Rota não encontrada com ID: " + id);
+        }
+    }
+
 }
