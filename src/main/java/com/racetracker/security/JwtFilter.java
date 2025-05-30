@@ -19,15 +19,27 @@ public class JwtFilter implements Filter {
             throws IOException, ServletException {
 
         HttpServletRequest request = (HttpServletRequest) req;
+        String method = request.getMethod();
+        String uri = request.getRequestURI();
+
+        if (method.equalsIgnoreCase("GET") && uri.equals("/api/routes")) {
+            chain.doFilter(req, res);
+            return;
+        }
+        if (uri.contains("/auth")) {
+            chain.doFilter(req, res);
+            return;
+        }
+
         String authHeader = request.getHeader("Authorization");
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7);
             if (!jwtService.isTokenValid(token)) {
-                ((HttpServletResponse) res).sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token invalido.");
+                ((HttpServletResponse) res).sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token inválido.");
                 return;
             }
-        } else if (!request.getRequestURI().contains("/auth")) {
+        } else {
             ((HttpServletResponse) res).sendError(HttpServletResponse.SC_UNAUTHORIZED, "Faltando token.");
             return;
         }

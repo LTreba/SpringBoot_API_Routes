@@ -18,4 +18,5 @@ public class SecurityConfig {
         registrationBean.addUrlPatterns("/api/*"); //Protegendo todos os endpoints da api
         return registrationBean;
     }
+    
 }
